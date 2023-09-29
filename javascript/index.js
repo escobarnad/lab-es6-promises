@@ -1,3 +1,7 @@
+
+
+
+
 // This will print in the wrong order.
 // We added it as an example and to test that the arrays from data.js are loaded
 
@@ -42,7 +46,12 @@ getInstruction("mashedPotatoes", 0,
         document.querySelector("#mashedPotatoes").innerHTML += `<li>${step4}</li>`;
         getInstruction("mashedPotatoes", 4, 
       (step5) => {
+        document.querySelector("#mashedPotatoes").innerHTML += `<li>${step5}</li>`;
         document.querySelector("#mashedPotatoes").innerHTML += `<li>Mashed potatoes are ready!</li>`;
+        let potatoImage = document.getElementById("mashedPotatoesImg");
+        if (potatoImage) {
+          potatoImage.removeAttribute("hidden");
+        }
         
       }, (error) => console.log(error));
         
@@ -86,7 +95,14 @@ obtainInstruction('steak', 0)
     return obtainInstruction('steak', 7);
   })
   .then( (step7) => {
+    document.querySelector("#steak").innerHTML += `<li>${step7}</li>`
     document.querySelector("#steak").innerHTML += `<li>stake is ready</li>`
+    let steakImage = document.getElementById("steakImg");
+    if (steakImage) {
+      steakImage.removeAttribute("hidden");
+    }
+
+
     return obtainInstruction('steak', 8);
   })
   .catch((errorCallback) => {
@@ -118,15 +134,43 @@ try{
   document.querySelector("#broccoli").innerHTML += `<li>${step5}</li>`
 
   const step6 = await obtainInstruction('broccoli',6);
+  document.querySelector("#broccoli").innerHTML += `<li>${step6}</li>`
   document.querySelector("#broccoli").innerHTML += `<li>broccoli is ready!</li>`
+
+  let broccoliImage = document.getElementById("broccoliImg");
+  if (broccoliImage) {
+    broccoliImage.removeAttribute("hidden");
+  }
 
 
 }catch(errorCallback) {
   console.log(errorCallback);
 }
 
+
 }
 makeBroccoli();
+ 
+
 
 // Bonus 2 - Promise all
-// ...
+
+  const allPromises = [];
+  brusselsSprouts.forEach((_,stepIndex)=>{
+    allPromises.push(obtainInstruction("brusselsSprouts",stepIndex));
+  });
+  console.log(allPromises);
+  Promise.all(allPromises)
+        .then((stepIndex) => {
+          document.querySelector("#brusselsSprouts").innerHTML += `<li>${stepIndex}</li>`  
+          document.querySelector("#brusselsSprouts").innerHTML += `<li>brussels sprouts ready!</li>`
+          let brusselsSproutsImage = document.getElementById("brusselsSproutsImg");
+        if (brusselsSproutsImage) {
+          brusselsSproutsImage.removeAttribute("hidden");
+        }
+    return obtainInstruction('brusselsSprouts', stepIndex);
+        })
+      
+
+        .catch((error) => console.log(error))
+  
