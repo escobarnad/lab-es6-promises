@@ -132,3 +132,23 @@ makeBroccoli()
 
 // Bonus 2 - Promise all
 // ...
+const allPromises = [];
+brusselsSprouts.forEach((_,stepIndex)=>{
+  allPromises.push(obtainInstruction("brusselsSprouts",stepIndex));
+});
+console.log(allPromises)
+Promise.all( allPromises )
+      .then((stepIndex) => { // Resolved value is an array
+        stepIndex.forEach((step) => {
+          document.querySelector("#brusselsSprouts").innerHTML += `<li>${step}</li>`
+        })
+        document.querySelector("#brusselsSprouts").innerHTML += `<li>brussels sprouts ready!</li>`
+
+        let brusselsSproutsImage = document.getElementById("brusselsSproutsImg");
+        if (brusselsSproutsImage) {
+          brusselsSproutsImage.removeAttribute("hidden");
+        }
+
+        return obtainInstruction('brusselsSprouts', stepIndex);
+      })
+      .catch((error) => {console.log(error)})
